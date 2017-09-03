@@ -11,6 +11,10 @@ public class RadioStreamingServiceBinder extends Binder {
         this.mRadioStreamingService = radioStreamingService;
     }
 
+    /**
+     * returns the mRadioStreamingService
+     * @return - mRadioStreamingService
+     */
     public RadioStreamingService getRadioStreamingService(){
 
         return mRadioStreamingService;

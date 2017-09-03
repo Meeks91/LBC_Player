@@ -18,8 +18,10 @@ public class RadioStreamingService extends Service {
 
     private RadioStreamingServiceBinder mBinder;
     private final String TAG = RadioStreamingService.class.getSimpleName();
-    private LBCExoPlayer lbcExoPlayer;
+    private LBCExoPlayer mLbcExoPlayer;
     private PlayerControlsBroadcastReceiver playerControlsBR;
+
+    //MARK: ---------- LIFECYCLE & GETTERS
 
     @Nullable
     @Override
@@ -27,7 +29,6 @@ public class RadioStreamingService extends Service {
 
         return mBinder;
     }
-
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -43,6 +44,36 @@ public class RadioStreamingService extends Service {
         return START_STICKY;
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        stopSelf();
+
+        mLbcExoPlayer.pauseLBC();
+
+        mLbcExoPlayer = null;
+
+        mBinder = null;
+    }
+
+    //MARK: ---------- LIFECYCLE & GETTERS
+
+    //MARK: ---------- INITIALISATION
+
+    /**
+     * inits the mLbcExoPlayer
+     */
+    private void initLbcExoplayer() {
+
+        mLbcExoPlayer = new LBCExoPlayer(this);
+    }
+
+    /**
+     * creates a PlayerControlsBroadcastReceiver,
+     * registers the pause and play actions
+     * and then registers it
+     */
     private void initPlayerControlsBroadcastReceiver() {
 
         playerControlsBR = new PlayerControlsBroadcastReceiver(this);
@@ -54,6 +85,10 @@ public class RadioStreamingService extends Service {
         registerReceiver(playerControlsBR, intentFilter);
     }
 
+    /**
+     * makes the the service a foreground service and assigns it a
+     * PlayerNotification to give it the radio player controls
+     */
     private void startForegroundLBCPlayer() {
 
         Notification playerNotification = PlayerNotification.build(this);
@@ -61,29 +96,15 @@ public class RadioStreamingService extends Service {
         startForeground(1, playerNotification);
     }
 
+    //MARK: ---------- INITIALISATION
 
-    private void initLbcExoplayer() {
-
-        lbcExoPlayer = new LBCExoPlayer(this);
-    }
-
+    //MARK: ---------- GETTERS
 
     public LBCExoPlayer getLbcExoPlayer() {
-        return lbcExoPlayer;
+        return mLbcExoPlayer;
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-
-        stopSelf();
-
-        lbcExoPlayer.pauseLBC();
-
-        lbcExoPlayer = null;
-
-        mBinder = null;
-    }
+    //MARK: ---------- GETTERS
 }
 
 

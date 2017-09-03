@@ -4,8 +4,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
-import com.heavymagikhq.lbc_player.lbcService.RadioStreamingService;
-
 /**
  * Created by Micah on 13/08/2017.
  */
@@ -27,14 +25,16 @@ public class PlayerControlsBroadcastReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
 
-        if (intent.getStringExtra(CONTROL_TYPE_KEY).equals(PAUSE_LBC_KEY)){
+        //check if we should pause the lbc player
+        if (intent.getStringExtra(CONTROL_TYPE_KEY).equals(PAUSE_LBC_KEY))
 
             radioStreamingService.getLbcExoPlayer().pauseLBC();
-        }
 
-        else if (intent.getStringExtra(CONTROL_TYPE_KEY).equals(PLAY_LBC_KEY)){
+
+        //check if we should play the lbc player
+        else if (intent.getStringExtra(CONTROL_TYPE_KEY).equals(PLAY_LBC_KEY))
 
             radioStreamingService.getLbcExoPlayer().resumeLBC();
-        }
+
     }
 }

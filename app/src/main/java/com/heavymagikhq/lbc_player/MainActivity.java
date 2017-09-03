@@ -7,79 +7,67 @@ import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
+
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.heavymagikhq.lbc_player.lbcExoPlayer.LBCExoPlayer;
 import com.heavymagikhq.lbc_player.lbcService.RadioStreamingService;
 import com.heavymagikhq.lbc_player.lbcService.RadioStreamingServiceBinder;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class MainActivity extends AppCompatActivity {
 
- private final String TAG  = MainActivity.class.getSimpleName();
- private ServiceConnection connection = new ServiceConnection() {
-     @Override
-     public void onServiceConnected(ComponentName name, IBinder service) {
+    private final String TAG = MainActivity.class.getSimpleName();
 
-         Log.d(TAG, "onCreate: service is: " + service.getClass().getSimpleName());
-
-         if (service instanceof RadioStreamingServiceBinder){
-
-             Log.d(TAG, "onCreate: service instanceof RadioStreamingService.RadioStreamingServiceBinder == true");
-
-             bindExoPlayerToExoPlayerView(((RadioStreamingServiceBinder) service).getRadioStreamingService().getLbcExoPlayer());
-         }
-     }
-
-     @Override
-     public void onServiceDisconnected(ComponentName name) {
-
-     }
- };
+    @BindView(R.id.exoPlayer) SimpleExoPlayerView mExoPlayerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
 
-       startService(new Intent(this, RadioStreamingService.class));
+        //start the RadioStreamingService
+        startService(new Intent(this, RadioStreamingService.class));
 
-       bindService(new Intent(this, RadioStreamingService.class), connection, Context.BIND_AUTO_CREATE);
+        //bind to the RadioStreamingService so we can bind the mExoPlayerView to the exoPlayer in the service
+        bindService(new Intent(this, RadioStreamingService.class), connectionToRadioStreamingService, Context.BIND_AUTO_CREATE);
     }
 
-   private void bindExoPlayerToExoPlayerView(LBCExoPlayer radioStreamingService){
+    /**
+     * binds the the mExoPlayerView to the radioStreamingService
+     *
+     * @param radioStreamingService - the service which contains the exoPlayer which plays LBC
+     */
+    private void bindExoPlayerToExoPlayerView(LBCExoPlayer radioStreamingService) {
 
-        ((SimpleExoPlayerView) findViewById(R.id.exoPlayer)).setPlayer(radioStreamingService.getExoPlayer());
-  }
+        mExoPlayerView.setPlayer(radioStreamingService.getExoPlayer());
+    }
+
+    private ServiceConnection connectionToRadioStreamingService = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+
+            //ensure the service is the RadioStreamingServiceBinder
+            if (service instanceof RadioStreamingServiceBinder)
+
+                //bind the exoPlayerView to the exoPlayer in the RadioStreamingService
+                bindExoPlayerToExoPlayerView(((RadioStreamingServiceBinder) service).getRadioStreamingService().getLbcExoPlayer());
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+
+        }
+    };
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
 
-        unbindService(connection);
+        unbindService(connectionToRadioStreamingService);
+
         stopService(new Intent(this, RadioStreamingService.class));
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
