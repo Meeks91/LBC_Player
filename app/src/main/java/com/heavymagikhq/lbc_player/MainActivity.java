@@ -66,8 +66,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
 
+        //free resources:
         unbindService(connectionToRadioStreamingService);
-
         stopService(new Intent(this, RadioStreamingService.class));
     }
 }
