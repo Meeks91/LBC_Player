@@ -19,7 +19,6 @@ import butterknife.ButterKnife;
 public class MainActivity extends AppCompatActivity {
 
     private final String TAG = MainActivity.class.getSimpleName();
-
     @BindView(R.id.exoPlayer) SimpleExoPlayerView mExoPlayerView;
 
     @Override
