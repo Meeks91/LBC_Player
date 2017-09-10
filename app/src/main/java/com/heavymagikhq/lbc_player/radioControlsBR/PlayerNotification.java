@@ -9,7 +9,6 @@ import android.support.v4.app.NotificationCompat;
 
 import com.heavymagikhq.lbc_player.LBCPlayerActivity;
 import com.heavymagikhq.lbc_player.R;
-import com.heavymagikhq.lbc_player.lbcStreamingService.RadioStreamingService;
 
 public class PlayerNotification{
 
@@ -61,7 +60,8 @@ public class PlayerNotification{
 
         //create and return the NotificationCompat.Action
         return new NotificationCompat.Action(R.drawable.play_icon,
-                                                "More LBC", PendingIntent.getBroadcast(context,
+                                                "More LBC",
+                                                  PendingIntent.getBroadcast(context,
                                                      0, playLBCIntent,
                                                          PendingIntent.FLAG_UPDATE_CURRENT));
     }
@@ -78,8 +78,9 @@ public class PlayerNotification{
         Intent pauseLBCIntent = new Intent(PlayerControlsBroadcastReceiver.PAUSE_LBC_ACTION_KEY);
 
         //create and return the NotificationCompat.Action
-        return new NotificationCompat.Action(R.mipmap.ic_launcher,
-                                        "No More LBC", PendingIntent.getBroadcast(context,
+        return new NotificationCompat.Action(R.drawable.pause_icon,
+                                        "No More LBC",
+                                           PendingIntent.getBroadcast(context,
                                              0, pauseLBCIntent,
                                                  PendingIntent.FLAG_UPDATE_CURRENT));
     }

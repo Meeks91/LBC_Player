@@ -52,7 +52,7 @@ public class LBCPlayerActivity extends AppCompatActivity {
             if (service instanceof RadioStreamingServiceBinder)
 
                 //bind the exoPlayerView to the exoPlayer in the RadioStreamingService
-                bindExoPlayerToExoPlayerView(((RadioStreamingServiceBinder) service).getRadioStreamingService().getLbcExoPlayer());
+                bindExoPlayerToExoPlayerView(((RadioStreamingServiceBinder) service).getRadioStreamingService().getLBCExoPlayer());
         }
 
         @Override

@@ -31,13 +31,13 @@ public class PlayerControlsBroadcastReceiver extends BroadcastReceiver {
         //check if we should pause the lbc player
         if (actionType.equals(PAUSE_LBC_ACTION_KEY))
 
-            radioStreamingService.getLbcExoPlayer().pauseLBC();
+            radioStreamingService.getLBCExoPlayer().pauseLBC();
 
 
         //check if we should play the lbc player
         else if (actionType.equals(PLAY_LBC_ACTION_KEY))
 
-            radioStreamingService.getLbcExoPlayer().resumeLBC();
+            radioStreamingService.getLBCExoPlayer().resumeLBC();
     }
 
     /**

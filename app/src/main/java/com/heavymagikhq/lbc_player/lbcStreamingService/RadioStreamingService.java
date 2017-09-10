@@ -100,7 +100,7 @@ public class RadioStreamingService extends Service {
 
     //MARK: ---------- GETTERS
 
-    public LBCExoPlayer getLbcExoPlayer() {
+    public LBCExoPlayer getLBCExoPlayer() {
         return mLbcExoPlayer;
     }
 
