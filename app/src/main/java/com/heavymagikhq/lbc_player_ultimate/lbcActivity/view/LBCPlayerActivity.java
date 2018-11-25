@@ -161,7 +161,7 @@ public class LBCPlayerActivity extends AppCompatActivity implements DaySelectedO
             showSelectionRV
                     .getLayoutManager()
                     .scrollToPosition(
-                            showsRVAdapter.getIndexOfShowToSelected()
+                            showsRVAdapter.getIndexOfSelectedShow()
                     );
 
             if (swipeRL.isRefreshing())

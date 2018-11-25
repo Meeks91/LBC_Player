@@ -11,7 +11,7 @@ import kotlinx.android.synthetic.main.item_lbc_show.view.*
 class ShowsRVAdapter(var lbcShows: List<LbcShow> = listOf()) : RecyclerView.Adapter<LbcShowVViewHolder>() {
 
     var selectedShow: LbcShow? = null
-    val indexOfShowToSelected: Int
+    val indexOfSelectedShow: Int
         get() = lbcShows.indexOf(selectedShow).takeIf { it != -1 } ?: 0
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): LbcShowVViewHolder =
