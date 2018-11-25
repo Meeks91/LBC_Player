@@ -38,7 +38,6 @@ public class LBCPlayerActivity extends AppCompatActivity implements DaySelectedO
     public static final String PODCAST_URI_KEY = "KEY";
     public static final String liveLbcUrl = "http://media-ice.musicradio.com/LBCLondonMP3";
     private final String TAG = LBCPlayerActivity.class.getSimpleName();
-    private LbcPlayerActivityPresenter lbcPlayerActivityPresenter;
 
     @BindView(R.id.liveLbcPlayer)
     SimpleExoPlayerView liveLbcExoPlayerView;
@@ -54,6 +53,7 @@ public class LBCPlayerActivity extends AppCompatActivity implements DaySelectedO
     private DayRVAdapter datesRVAdapter = null;
     private ShowsRVAdapter showsRVAdapter = null;
     private RadioStreamingService radioStreamingService;
+    private LbcPlayerActivityPresenter lbcPlayerActivityPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
