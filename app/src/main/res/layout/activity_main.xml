@@ -1,14 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
-    tools:context="com.heavymagikhq.lbc_player.LBCPlayerActivity">
+    tools:context="com.heavymagikhq.lbc_player_ultimate.lbcActivity.view.LBCPlayerActivity">
 
     <com.google.android.exoplayer2.ui.SimpleExoPlayerView
+        android:id="@+id/liveLbcPlayer"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:id="@+id/exoPlayer"
-        />
-</RelativeLayout>
+        android:layout_height="75dp" />
+
+    <com.google.android.exoplayer2.ui.SimpleExoPlayerView
+        android:id="@+id/podtcastLbcShowPlayer"
+        android:layout_width="match_parent"
+        android:layout_height="75dp"
+        app:layout_constraintTop_toBottomOf="@+id/liveLbcPlayer" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/daySelectionRV"
+        android:layout_width="0dp"
+        android:layout_height="75dp"
+        android:orientation="horizontal"
+        app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/podtcastLbcShowPlayer" />
+
+    <View
+        android:id="@+id/dateAndShowSeperator"
+        android:layout_width="0dp"
+        android:layout_height="0.5dp"
+        android:background="@color/colorPrimaryDark"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/daySelectionRV" />`
+
+    <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/swipeRL"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dateAndShowSeperator">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/showSelectionRV"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
+
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+</android.support.constraint.ConstraintLayout>
