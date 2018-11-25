@@ -1,4 +1,4 @@
-package com.heavymagikhq.lbc_player_ultimate
+package com.heavymagikhq.lbc_player_ultimate.lbcActivity.view.daysRV
 
 import android.support.v7.widget.RecyclerView
 import android.view.View
