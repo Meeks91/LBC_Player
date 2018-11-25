@@ -50,8 +50,8 @@ public class LBCPlayerActivity extends AppCompatActivity implements DaySelectedO
     @BindView(R.id.swipeRL)
     SwipeRefreshLayout swipeRL;
 
-    private DayRVAdapter datesRVAdapter = null;
-    private ShowsRVAdapter showsRVAdapter = null;
+    private DayRVAdapter datesRVAdapter;
+    private ShowsRVAdapter showsRVAdapter;
     private RadioStreamingService radioStreamingService;
     private LbcPlayerActivityPresenter lbcPlayerActivityPresenter;
 
