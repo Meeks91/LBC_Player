@@ -17,7 +17,9 @@ data class LbcShowApiModel(
             (audioDetails["AssetFile"] as? LinkedTreeMap<*, *>)?.get("FileName") as String?
 
     private val dateAired: String?
-        get() = _dateAired.substringBefore("T").split("-")
+        get() = _dateAired
+                .substringBefore("T")
+                .split("-")
                 .takeIf { it.size == 3 }
                 ?.let { "${it[2]}-${it[1]}-${it[0]}" }
 
