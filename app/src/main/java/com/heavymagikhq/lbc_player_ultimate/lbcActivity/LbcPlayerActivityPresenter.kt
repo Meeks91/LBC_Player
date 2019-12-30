@@ -11,7 +11,6 @@ import java.util.*
 class LbcPlayerActivityPresenter(private val view: LbcPlayerView) {
 
     private var shows: List<LbcShow>? = null
-    var selectedShow: LbcShow? = null
 
     private val availableDates: List<Date> by lazy {
         (-6..0).map {

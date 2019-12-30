@@ -3,7 +3,9 @@ package com.heavymagikhq.lbc_player_ultimate.lbcActivity.view.daysRV
 import android.graphics.Color
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import asDayMonthYear
 import com.heavymagikhq.lbc_player_ultimate.R
 import kotlinx.android.synthetic.main.item_day.view.*
@@ -32,5 +34,17 @@ class DayRVAdapter(var dates: List<Date> = listOf()) : RecyclerView.Adapter<Days
         holder.itemView.dateTV.setTextColor(if (isSelected) Color.WHITE else Color.DKGRAY)
 
         holder.itemView.isSelected = isSelected
+    
+        initEllyMode(holder)
+    }
+    
+    private fun initEllyMode(holder: DaysRVViewHolder) {
+        holder.itemView.isLongClickable = true
+        holder.itemView.setOnLongClickListener(object : View.OnLongClickListener {
+            override fun onLongClick(v: View?): Boolean {
+                Toast.makeText(holder.itemView.context, "... Venture Cannon Ball Fired", Toast.LENGTH_SHORT).show()
+                return true
+            }
+        })
     }
 }

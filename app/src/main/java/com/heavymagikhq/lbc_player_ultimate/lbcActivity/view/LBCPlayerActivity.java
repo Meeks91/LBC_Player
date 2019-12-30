@@ -65,6 +65,11 @@ public class LBCPlayerActivity extends AppCompatActivity implements DaySelectedO
         initRVAdapters();
         initPresenter();
         initSwipeRL();
+        setEllyModeTitle();
+    }
+
+    private void setEllyModeTitle() {
+        setTitle("Elly Escobar's LBC Player");
     }
 
     //MARK: ---------- INITIALISATION
