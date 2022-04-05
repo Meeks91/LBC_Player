@@ -19,7 +19,8 @@
         <activity
             android:name="com.heavymagikhq.lbc_player_ultimate.lbcActivity.view.LBCPlayerActivity"
             android:exported="true"
-            android:launchMode="singleInstance">
+            android:launchMode="singleInstance"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
