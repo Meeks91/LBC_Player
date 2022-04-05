@@ -1,8 +1,8 @@
 package com.heavymagikhq.lbc_player_ultimate.lbcActivity.view.showsRV
 
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import android.view.View
-import com.heavymagikhq.lbc_player_ultimate.lbcActivity.model.beans.LbcShow
+import com.heavymagikhq.lbc_player_ultimate.lbcActivity.model.services.lbcShowRetrieverService.LbcShow
 
 class LbcShowVViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 

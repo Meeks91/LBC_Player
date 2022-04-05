@@ -8,7 +8,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Build;
-import android.support.v4.app.NotificationCompat;
+
+import androidx.core.app.NotificationCompat;
 
 import com.heavymagikhq.lbc_player_ultimate.lbcActivity.view.LBCPlayerActivity;
 import com.heavymagikhq.lbc_player_ultimate.R;
@@ -37,13 +38,17 @@ public class PlayerNotification {
 
         //Make pending intent to pass the notificationIntent
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0,
-                notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                notificationIntent, PendingIntent.FLAG_MUTABLE);
 
         final String channelId = "123456789";
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel notificationChannel = new NotificationChannel(channelId, "LBC Player Channel", NotificationManager.IMPORTANCE_LOW);
-            notificationChannel.setSound(null,null);
+            NotificationChannel notificationChannel = new NotificationChannel(
+                    channelId,
+                    "LBC Player Channel",
+                    NotificationManager.IMPORTANCE_LOW
+            );
+            notificationChannel.setSound(null, null);
             notificationChannel.enableLights(false);
             notificationChannel.enableVibration(false);
             ((NotificationManager) Objects.requireNonNull(context.getSystemService(Context.NOTIFICATION_SERVICE)))
@@ -80,7 +85,7 @@ public class PlayerNotification {
                 "More LBC",
                 PendingIntent.getBroadcast(context,
                         0, playLBCIntent,
-                        PendingIntent.FLAG_UPDATE_CURRENT));
+                        PendingIntent.FLAG_MUTABLE));
     }
 
     /**
@@ -97,8 +102,12 @@ public class PlayerNotification {
         //create and return the NotificationCompat.Action
         return new NotificationCompat.Action(R.drawable.pause_icon,
                 "No More LBC",
-                PendingIntent.getBroadcast(context,
-                        0, pauseLBCIntent,
-                        PendingIntent.FLAG_UPDATE_CURRENT));
+                PendingIntent.getBroadcast(
+                        context,
+                        0,
+                        pauseLBCIntent,
+                        PendingIntent.FLAG_MUTABLE
+                )
+        );
     }
 }

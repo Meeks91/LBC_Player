@@ -15,10 +15,9 @@ public class PlayerControlsBroadcastReceiver extends BroadcastReceiver {
 
     public static final String PAUSE_LBC_ACTION_KEY = "PAUSE_LBC_ACTION_KEY";
     public static final String PLAY_LBC_KEY = "PLAY_LBC_KEY";
-    private RadioStreamingService radioStreamingService;
+    private final RadioStreamingService radioStreamingService;
 
     public PlayerControlsBroadcastReceiver(RadioStreamingService radioStreamingService) {
-
         this.radioStreamingService = radioStreamingService;
     }
 

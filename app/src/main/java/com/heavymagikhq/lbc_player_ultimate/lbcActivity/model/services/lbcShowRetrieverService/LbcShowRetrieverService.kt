@@ -2,8 +2,6 @@ package com.heavymagikhq.lbc_player_ultimate.lbcActivity.model.services.lbcShowR
 
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.heavymagikhq.lbc_player_ultimate.lbcActivity.model.beans.LbcShow
-import com.heavymagikhq.lbc_player_ultimate.lbcActivity.model.beans.LbcShowPresenter
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.Response
@@ -13,61 +11,52 @@ import java.util.*
 
 object LbcShowRetrieverService {
 
-    private val baseUrl = "http://ws.geronimo.thisisglobal.com"
-    private var client = OkHttpClient()
-    private val gson = Gson()
-    private val showSearchResponseType: Type = object : TypeToken<ShowSearchResponse>() {}.type
-    private val yearMonthDayFormatter = SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH)
+    private const val CATCH_UPS_URL =
+        "https://bff-web-guacamole.musicradio.com/globalplayer/catchups"
+    private var CLIENT = OkHttpClient()
+    private val GSON = Gson()
+    private val LBC_PRESENTER_TYPE: Type = object : TypeToken<List<LbcPresenter>>() {}.type
+    private val LBC_SHOW_TYPE: Type = object : TypeToken<PresenterShows>() {}.type
+    private val DATE_FORMATTER = SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH)
 
-    //MARK: ------------ REQUESTS
+    // MARK: ------------ REQUESTS
 
-    fun getShowFor(presenter: LbcShowPresenter, date: Date = Calendar.getInstance().time): List<LbcShow> {
+    fun getAllPresenters(): List<LbcPresenter> {
         val request = Request.Builder()
-                .url(generateShowUrlFor(presenter, date))
-                .get()
-                .build()
-        return parseShowSearchResponseIn(
-                client.newCall(request).execute()
+            .url("$CATCH_UPS_URL/lbc/uk")
+            .get()
+            .build()
+        return parsePresenters(
+            CLIENT.newCall(request).execute()
         )
     }
 
-    fun getAllShows(): List<LbcShow> {
+    fun getShows(presenterId: String): List<LbcShow> {
         val request = Request.Builder()
-                .url(generateFetchAllShowsUrl())
-                .get()
-                .build()
-        return parseShowSearchResponseIn(
-                client.newCall(request).execute()
+            .url("$CATCH_UPS_URL/$presenterId")
+            .get()
+            .build()
+        return parsePresenterShows(
+            CLIENT.newCall(request).execute()
         )
     }
 
-    private fun generateShowUrlFor(showPresenter: LbcShowPresenter, date: Date): String {
-        val dateString = asYearMonthDay(date)
-        val startDate = "${dateString}T${showPresenter.startTimeofShow}"
-        val endDate = "${dateString}T${showPresenter.endTimeOfShow}"
-        return "$baseUrl/api/Episode/ListEpisodesByStationAndAirDate?stationId=97b707c5-f937-4148-9d1d-2abfa0e91168&startDate=$startDate&endDate=$endDate"
+    // MARK: ------------ REQUESTS
+
+    // MARK: ------------ PARSING
+
+    private fun parsePresenters(response: Response): List<LbcPresenter> {
+        val string = response.body?.string() ?: ""
+        return GSON
+            .fromJson<List<LbcPresenter>>(string, LBC_PRESENTER_TYPE)
     }
 
-    private fun generateFetchAllShowsUrl(): String {
-        val startDate = "${asYearMonthDay(Calendar.getInstance().apply { add(Calendar.DAY_OF_YEAR, -6) }.time)}T00:00"
-        val endDate = "${asYearMonthDay(Date())}T23:59"
-        return "$baseUrl/api/Episode/ListEpisodesByStationAndAirDate?stationId=97b707c5-f937-4148-9d1d-2abfa0e91168&startDate=$startDate&endDate=$endDate"
+    private fun parsePresenterShows(response: Response): List<LbcShow> {
+        val respAsStr = response.body?.string() ?: ""
+        return GSON
+            .fromJson<PresenterShows>(respAsStr, LBC_SHOW_TYPE)
+            .episodes
     }
 
-    private fun asYearMonthDay(date: Date): String =
-            yearMonthDayFormatter.format(date)
-
-    //MARK: ------------ REQUESTS
-
-    //MARK: ------------ PARSING
-
-    private fun parseShowSearchResponseIn(response: Response): List<LbcShow> {
-        val string = response.body()?.string() ?: ""
-        return gson
-                .fromJson<ShowSearchResponse>(string, showSearchResponseType)
-                .shows
-                .map { it.toLbcShow()  }
-    }
-
-    //MARK: ------------ PARSING
+    // MARK: ------------ PARSING
 }

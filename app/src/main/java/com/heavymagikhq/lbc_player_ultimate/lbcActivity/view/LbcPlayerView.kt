@@ -1,10 +1,10 @@
 package com.heavymagikhq.lbc_player_ultimate.lbcActivity.view
 
-import com.heavymagikhq.lbc_player_ultimate.lbcActivity.model.beans.LbcShow
-import java.util.*
+import com.heavymagikhq.lbc_player_ultimate.lbcActivity.model.services.lbcShowRetrieverService.LbcPresenter
+import com.heavymagikhq.lbc_player_ultimate.lbcActivity.model.services.lbcShowRetrieverService.LbcShow
 
 interface LbcPlayerView {
-    fun onSetDatesTo(dates: List<Date>, selectedDateIndex: Int)
+    fun onPresentersSet(presenters: List<LbcPresenter>)
     fun onHandleFailureToGetShows(errorMessage: String)
-    fun listThese(shows: List<LbcShow>)
+    fun listPresenterShows(shows: List<LbcShow>)
 }

@@ -5,10 +5,10 @@ import android.app.Service;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.IBinder;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 
-import com.heavymagikhq.lbc_player_ultimate.lbcActivity.view.LBCPlayerActivity;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.heavymagikhq.lbc_player_ultimate.lbcExoPlayer.LbcExoPlayer;
 import com.heavymagikhq.lbc_player_ultimate.radioControlsBR.PlayerControlsBroadcastReceiver;
 import com.heavymagikhq.lbc_player_ultimate.radioControlsBR.PlayerNotification;
@@ -23,9 +23,8 @@ public class RadioStreamingService extends Service {
     private final String TAG = RadioStreamingService.class.getSimpleName();
     private LbcExoPlayer mLbcExoPlayer;
     private PlayerControlsBroadcastReceiver playerControlsBR;
-    private LbcExoPlayer podcastExoPlayer;
 
-    //MARK: ---------- LIFECYCLE
+    // MARK: ---------- LIFECYCLE
 
     @Nullable
     @Override
@@ -35,10 +34,6 @@ public class RadioStreamingService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        initLbcExoPlayerWith(
-                intent.getStringExtra(LBCPlayerActivity.PODCAST_URI_KEY)
-        );
-
         initPlayerControlsBroadcastReceiver();
 
         mBinder = new RadioStreamingServiceBinder(this);
@@ -53,27 +48,17 @@ public class RadioStreamingService extends Service {
         super.onDestroy();
 
         mLbcExoPlayer.pauseLBC();
-        if (podcastExoPlayer != null)
-            podcastExoPlayer.pauseLBC();
-
+        mLbcExoPlayer.release();
         mLbcExoPlayer = null;
-        podcastExoPlayer = null;
         mBinder = null;
 
         unregisterReceiver(playerControlsBR);
         stopSelf();
     }
 
-    //MARK: ---------- LIFECYCLE
+    // MARK: ---------- LIFECYCLE
 
-    //MARK: ---------- INITIALISATION
-
-    /**
-     * inits the mLbcExoPlayer
-     */
-    private void initLbcExoPlayerWith(String podcastUrl) {
-        mLbcExoPlayer = new LbcExoPlayer(this, podcastUrl);
-    }
+    // MARK: ---------- INITIALISATION
 
     /**
      * creates a PlayerControlsBroadcastReceiver,
@@ -90,47 +75,36 @@ public class RadioStreamingService extends Service {
      * makes the the service a foreground service and assigns it a
      * PlayerNotification to give it the radio player controls
      */
-    private void startForegroundLBCPlayer() {
+    public void startForegroundLBCPlayer() {
         Notification playerNotification = PlayerNotification.build(this);
         startForeground(1, playerNotification);
     }
 
-    //MARK: ---------- INITIALISATION
+    // MARK: ---------- INITIALISATION
 
-    //MARK: ---------- CONTROLS
+    // MARK: ---------- CONTROLS
 
     public void pauseLBC() {
-        if (getPodcastExoPlayer() != null)
-            getPodcastExoPlayer().pauseLBC();
-        getLiveLbcExoPlayer().pauseLBC();
+        getLbcPlayer().pauseLBC();
     }
 
     public void resumeLastStartedPlayer() {
-        if (getPodcastExoPlayer() != null && getPodcastExoPlayer().getLastTimeStarted() > getLiveLbcExoPlayer().getLastTimeStarted())
-            getPodcastExoPlayer().resumeLBC();
-        else
-            getLiveLbcExoPlayer().resumeLBC();
+            getLbcPlayer().resumeLBC();
     }
 
-    //MARK: ---------- CONTROLS
+    // MARK: ---------- CONTROLS
 
-    //MARK: ---------- GETTERS & SETTERS
+    // MARK: ---------- GETTERS & SETTERS
 
-    @NonNull
-    public LbcExoPlayer getLiveLbcExoPlayer() {
+    public LbcExoPlayer getLbcPlayer() {
         return mLbcExoPlayer;
     }
 
-    @Nullable
-    public LbcExoPlayer getPodcastExoPlayer() {
-        return podcastExoPlayer;
+    public void setLbcPlayer(LbcExoPlayer player) {
+         this.mLbcExoPlayer = player;
     }
 
-    public void setPodcastPlayer(@NonNull LbcExoPlayer podcastExoPlayer) {
-        this.podcastExoPlayer = podcastExoPlayer;
-    }
-
-    //MARK: ---------- GETTERS & SETTERS
+    // MARK: ---------- GETTERS & SETTERS
 }
 
 
